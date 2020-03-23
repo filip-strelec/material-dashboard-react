@@ -13,6 +13,8 @@ padding:20px;
 border-radius:3px;
 font-weight:700;
     background-color:${props => props.status};
+    pointer-events: ${props => props.pointerEvent};
+
 
 
 `;
@@ -41,10 +43,12 @@ const WindowFocusHandler = () => {
   const [Pm10, setPm10] = useState("0");
 const [Led1Status, setLed1Status] = useState(false);
   const [IntervalStarted, setIntervalStarted] = useState(false);
-
+const [clicked, setclicked] = useState(false)
   
   useEffect(() => {
 
+
+    
     if (!IntervalStarted){ const interval = setInterval(() => {
         axios.get(`http://192.168.0.15/`).then(res => {
           // const persons = res.data;
@@ -93,8 +97,11 @@ const [Led1Status, setLed1Status] = useState(false);
   return (
     <WrapperContent>
       <StyledButton
+      pointerEvent ={clicked ? "none" :"unset"}
       status={Led1Status ==="On" ? "green" :"red"}
         onClick={() => {
+            setclicked(true);
+           console.log("clicked")
           axios.get(`http://192.168.0.15/led1`).then(res => {
             console.log(res.data);
             setTemp(res.data.temperatura);
@@ -103,6 +110,14 @@ const [Led1Status, setLed1Status] = useState(false);
             setPm10(res.data["PM:10"])
             setEtanol(res.data["Alcohol-PPM"])
             setLed1Status(res.data.led1);
+            setclicked(false);
+
+
+          }).catch(function (error) {
+            // handle error
+            console.log(error);
+            setclicked(false);
+
           });
         }}
         type="button"
