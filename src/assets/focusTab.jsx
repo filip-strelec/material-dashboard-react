@@ -1,102 +1,112 @@
-import React, { useEffect } from 'react';
-import axios from 'axios';
-import styled from 'styled-components'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import styled from "styled-components";
 import Button from "components/CustomButtons/Button.js";
 
-
-
-const WrapperContent=styled.div`
-width:30px;
-margin-top:100px;
-padding:0 20px;
-`
-const StyledButton = styled(Button)`
-
-`
+const WrapperContent = styled.div`
+  margin-top: 100px;
+  padding: 0 20px;
+`;
+const StyledButton = styled(Button)``;
 
 const TextContainer = styled.div`
-display:flex;
-width:100;
-margin-top:50px;
-`
-
+  display: flex;
+  flex-direction: column;
+  
+  margin-top: 50px;
+`;
+const Text = styled.div`
+  width: max-content;
+  margin-top: 16px;
+`;
 
 let idVar;
 // User has switched back to the tab
 
-
 // User has switched away from the tab (AKA tab is hidden)
 
 const WindowFocusHandler = () => {
+  const [Temp, setTemp] = useState("0");
+  const [Humidity, setHumidity] = useState("0");
+  const [Etanol, setEtanol] = useState("0");
+  const [Pm25, setPm25] = useState("0");
+  const [Pm10, setPm10] = useState("0");
+  const [IntervalStarted, setIntervalStarted] = useState(false);
 
-
-    
+  
   useEffect(() => {
-    const onFocus = () => {
-        clearInterval(idVar)
-         idVar = setInterval(() => { 
-            
-                axios.get(`http://192.168.0.15/`)
-                .then(res => {
-                  // const persons = res.data;
-                  // this.setState({ persons });
-                  console.log(res.data);
-                })
-    
-          }, 2200);
-    
-          
-      console.log('Tab is in focus');
-      console.log(idVar)
-     
-    
-    };
 
-    const onBlur = () => {
-        console.log('Tab is blurred');
-        clearInterval(idVar)
-        console.log(idVar)
-      };
-      
-    window.addEventListener('focus', onFocus);
-    window.addEventListener('blur', onBlur);
-
-    idVar = setInterval(() => { 
-        
-        axios.get(`http://192.168.0.15/`)
-        .then(res => {
+    if (!IntervalStarted){ const interval = setInterval(() => {
+        axios.get(`http://192.168.0.15/`).then(res => {
           // const persons = res.data;
           // this.setState({ persons });
           console.log(res.data);
-        })
+          setTemp(res.data.temperatura);
+          setHumidity(res.data.vlaga);
+          setPm25(res.data["PM:2.5"])
+          setPm10(res.data["PM:10"])
+          setEtanol(res.data["Alcohol-PPM"])
+          
+          
+        });
+      }, 3000);
+      setIntervalStarted(true);
+    
+    }
+   
 
-  }, 2200);
+    const onFocus = () => {
+  
+     
+      console.log("Tab is in focus");
+      console.log(idVar);
+    };
+
+    const onBlur = () => {
+      console.log("Tab is blurred");
+      
+      console.log(idVar);
+    };
+
+    window.addEventListener("focus", onFocus);
+    window.addEventListener("blur", onBlur);
+
+   
 
     // Specify how to clean up after this effect:
     return () => {
-      window.removeEventListener('focus', onFocus);
-      window.removeEventListener('blur', onBlur);
+      window.removeEventListener("focus", onFocus);
+      window.removeEventListener("blur", onBlur);
     };
   });
-  
 
-  return   <WrapperContent>
-  <StyledButton onClick={()=>{
-    
-    
-   
-    axios.get(`http://192.168.0.15/led1`)
-    .then(res => {
-      // const persons = res.data;
-      // this.setState({ persons });
-      console.log(res.data);
-    })
-    
-    
-    }} type="button" color="primary">Light 1</StyledButton>
+  return (
+    <WrapperContent>
+      <StyledButton
+        onClick={() => {
+          axios.get(`http://192.168.0.15/led1`).then(res => {
+            console.log(res.data);
+            setTemp(res.data.temperatura);
+          });
+        }}
+        type="button"
+        color="primary"
+      >
+        Light 1
+      </StyledButton>
 
-    <TextContainer>Temperatura:</TextContainer>
-  </WrapperContent>;
+      <TextContainer>
+        <Text>Temperatura:{Temp} °C</Text>
+        <Text>Vlažnost:{Humidity} %</Text>
+    <Text>PM2.5: {Pm25} pcs/0.01cf</Text>
+    <Text>PM10: {Pm10} pcs/0.01cf</Text>
+    <Text>Etanol: {Etanol} ‰ </Text>
+    
+
+
+      </TextContainer>
+    </WrapperContent>
+  );
 };
 
 export default WindowFocusHandler;
