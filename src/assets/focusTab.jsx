@@ -42,6 +42,8 @@ const WindowFocusHandler = () => {
   const [Pm25, setPm25] = useState("0");
   const [Pm10, setPm10] = useState("0");
 const [Led1Status, setLed1Status] = useState(false);
+const [HeatStatus, setHeatStatus] = useState(false);
+
   const [IntervalStarted, setIntervalStarted] = useState(false);
 const [clicked, setclicked] = useState(false)
   
@@ -97,6 +99,36 @@ const [clicked, setclicked] = useState(false)
     <WrapperContent>
       <StyledButton
       pointerEvent ={clicked ? "none" :"unset"}
+      status={HeatStatus ==="On" ? "green" :"red"}
+        onClick={() => {
+            setclicked(true);
+           console.log("clicked")
+          axios.get(`http://192.168.0.15/heat`).then(res => {
+            console.log(res.data);
+            setTemp(res.data.temperatura);
+            setHumidity(res.data.vlaga);
+            setPm25(res.data["PM:2.5"])
+            setPm10(res.data["PM:10"])
+            setEtanol(res.data["Alcohol-PPM"])
+            setLed1Status(res.data.led1);
+            setclicked(false);
+
+
+          }).catch(function (error) {
+            // handle error
+            console.log(error);
+            setclicked(false);
+
+          });
+        }}
+        type="button"
+        color="primary"
+      >
+        Heating
+      </StyledButton>
+
+      <StyledButton
+      pointerEvent ={clicked ? "none" :"unset"}
       status={Led1Status ==="On" ? "green" :"red"}
         onClick={() => {
             setclicked(true);
@@ -124,9 +156,11 @@ const [clicked, setclicked] = useState(false)
       >
         Light 1
       </StyledButton>
+
+
       <StyledButton
       pointerEvent ={clicked ? "none" :"unset"}
-      status={Led1Status ==="On" ? "green" :"red"}
+      // status={Led1Status ==="On" ? "green" :"red"}
         onClick={() => {
             setclicked(true);
            console.log("clicked")
