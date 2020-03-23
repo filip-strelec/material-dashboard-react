@@ -51,7 +51,8 @@ const [clicked, setclicked] = useState(false)
 
 
     
-    // if (!IntervalStarted){ const interval = setInterval(() => {
+    if (!IntervalStarted){ 
+      // const interval = setInterval(() => {
         axios.get(`http://192.168.0.15/`).then(res => {
        
           console.log(res.data);
@@ -61,12 +62,13 @@ const [clicked, setclicked] = useState(false)
           setPm10(res.data["PM:10"])
           setEtanol(res.data["Alcohol-PPM"])
           setLed1Status(res.data.led1);
+          setHeatStatus(res.data.heat);
           
           
         });
       // }, 3000);
       setIntervalStarted(true);
-    
+      }
     // }
    
 
@@ -111,6 +113,7 @@ const [clicked, setclicked] = useState(false)
             setPm10(res.data["PM:10"])
             setEtanol(res.data["Alcohol-PPM"])
             setLed1Status(res.data.led1);
+            setHeatStatus(res.data.heat);
             setclicked(false);
 
 
@@ -141,6 +144,7 @@ const [clicked, setclicked] = useState(false)
             setPm10(res.data["PM:10"])
             setEtanol(res.data["Alcohol-PPM"])
             setLed1Status(res.data.led1);
+            setHeatStatus(res.data.heat);
             setclicked(false);
 
 
