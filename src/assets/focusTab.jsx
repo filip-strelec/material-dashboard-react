@@ -7,7 +7,15 @@ const WrapperContent = styled.div`
   margin-top: 100px;
   padding: 0 20px;
 `;
-const StyledButton = styled(Button)``;
+const StyledButton = styled.button`
+
+padding:20px;
+border-radius:3px;
+font-weight:700;
+    background-color:${props => props.status};
+
+
+`;
 
 const TextContainer = styled.div`
   display: flex;
@@ -31,6 +39,7 @@ const WindowFocusHandler = () => {
   const [Etanol, setEtanol] = useState("0");
   const [Pm25, setPm25] = useState("0");
   const [Pm10, setPm10] = useState("0");
+const [Led1Status, setLed1Status] = useState(false);
   const [IntervalStarted, setIntervalStarted] = useState(false);
 
   
@@ -46,6 +55,7 @@ const WindowFocusHandler = () => {
           setPm25(res.data["PM:2.5"])
           setPm10(res.data["PM:10"])
           setEtanol(res.data["Alcohol-PPM"])
+          setLed1Status(res.data.led1);
           
           
         });
@@ -83,10 +93,16 @@ const WindowFocusHandler = () => {
   return (
     <WrapperContent>
       <StyledButton
+      status={Led1Status ==="On" ? "green" :"red"}
         onClick={() => {
           axios.get(`http://192.168.0.15/led1`).then(res => {
             console.log(res.data);
             setTemp(res.data.temperatura);
+            setHumidity(res.data.vlaga);
+            setPm25(res.data["PM:2.5"])
+            setPm10(res.data["PM:10"])
+            setEtanol(res.data["Alcohol-PPM"])
+            setLed1Status(res.data.led1);
           });
         }}
         type="button"
