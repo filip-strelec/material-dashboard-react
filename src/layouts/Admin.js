@@ -1,4 +1,8 @@
 import React from "react";
+import axios from 'axios';
+import Button from "components/CustomButtons/Button.js";
+import WindowFocusHandler from '../assets/focusTab'
+import styled from 'styled-components'
 import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
@@ -19,6 +23,7 @@ import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
 
 let ps;
+
 
 const switchRoutes = (
   <Switch>
@@ -92,8 +97,15 @@ export default function Admin({ ...rest }) {
       window.removeEventListener("resize", resizeFunction);
     };
   }, [mainPanel]);
+  
+ 
+
+ 
+
+  
   return (
     <div className={classes.wrapper}>
+    
       <Sidebar
         routes={routes}
         logoText={"Creative Tim"}
@@ -111,22 +123,9 @@ export default function Admin({ ...rest }) {
           {...rest}
         />
         {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
-        {getRoute() ? (
-          <div className={classes.content}>
-            <div className={classes.container}>{switchRoutes}</div>
-          </div>
-        ) : (
-          <div className={classes.map}>{switchRoutes}</div>
-        )}
-        {getRoute() ? <Footer /> : null}
-        <FixedPlugin
-          handleImageClick={handleImageClick}
-          handleColorClick={handleColorClick}
-          bgColor={color}
-          bgImage={image}
-          handleFixedClick={handleFixedClick}
-          fixedClasses={fixedClasses}
-        />
+       <div>
+       <WindowFocusHandler/>
+       </div>
       </div>
     </div>
   );
