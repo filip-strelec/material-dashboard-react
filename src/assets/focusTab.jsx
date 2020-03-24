@@ -52,7 +52,7 @@ const [clicked, setclicked] = useState(false)
 
     
     if (!IntervalStarted){ 
-      const interval = setInterval(() => {
+      // const interval = setInterval(() => {
         axios.get(`http://192.168.0.15/`).then(res => {
        
           console.log(res.data);
@@ -66,7 +66,7 @@ const [clicked, setclicked] = useState(false)
           
           
         });
-      }, 3000);
+      // }, 3000);
       setIntervalStarted(true);
       }
     // }
