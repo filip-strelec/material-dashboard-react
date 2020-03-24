@@ -53,7 +53,7 @@ const [clicked, setclicked] = useState(false)
     
     if (!IntervalStarted){ 
       const interval = setInterval(() => {
-        axios.get(`http://192.168.0.15/led1`).then(res => {
+        axios.get(`http://192.168.0.15/`).then(res => {
        
           console.log(res.data);
           setTemp(res.data.temperatura);
