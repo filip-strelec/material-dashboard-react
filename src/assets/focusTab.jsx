@@ -1,29 +1,34 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import Button from "components/CustomButtons/Button.js";
+// import Button from "components/CustomButtons/Button.js";
 
 const WrapperContent = styled.div`
   margin-top: 100px;
   padding: 0 20px;
 `;
 const StyledButton = styled.button`
-
-padding:20px;
-border-radius:3px;
-font-weight:700;
-    background-color:${props => props.status};
-    pointer-events: ${props => props.pointerEvent};
-
-
-
+  padding: 20px;
+  border-radius: 3px;
+  font-weight: 700;
+  background-color: ${props => props.status};
+  pointer-events: ${props => props.pointerEvent};
 `;
 
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
-  
+
   margin-top: 50px;
+`;
+
+const Corona = styled.div`
+  margin-top: 20px;
+  border-top: 2px solid black;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 700;
 `;
 const Text = styled.div`
   width: max-content;
@@ -41,54 +46,61 @@ const WindowFocusHandler = () => {
   const [Etanol, setEtanol] = useState("0");
   const [Pm25, setPm25] = useState("0");
   const [Pm10, setPm10] = useState("0");
-const [Led1Status, setLed1Status] = useState(false);
-const [HeatStatus, setHeatStatus] = useState(false);
+  const [Led1Status, setLed1Status] = useState(false);
+  const [HeatStatus, setHeatStatus] = useState(false);
 
   const [IntervalStarted, setIntervalStarted] = useState(false);
-const [clicked, setclicked] = useState(false)
-  
+  const [clicked, setclicked] = useState(false);
+
+  const [Cases, setCases] = useState("");
+  const [TodayCases, setTodayCases] = useState("");
+  const [Deaths, setDeaths] = useState("");
+  const [Todaydeaths, Todaysetdeaths] = useState("");
+  const [CasesPerM, setCasesPerM] = useState("");
+
   useEffect(() => {
-
-
-    
-    if (!IntervalStarted){ 
+    if (!IntervalStarted) {
       // const interval = setInterval(() => {
-        axios.get(`http://192.168.0.15/`).then(res => {
-       
+      axios.get(`http://192.168.0.15/`).then(res => {
+        console.log(res.data);
+        setTemp(res.data.temperatura);
+        setHumidity(res.data.vlaga);
+        setPm25(res.data["PM:2.5"]);
+        setPm10(res.data["PM:10"]);
+        setEtanol(res.data["Alcohol-PPM"]);
+        setLed1Status(res.data.led1);
+        setHeatStatus(res.data.heat);
+      });
+
+      axios
+        .get(`https://coronavirus-19-api.herokuapp.com/countries/croatia`)
+        .then(res => {
           console.log(res.data);
-          setTemp(res.data.temperatura);
-          setHumidity(res.data.vlaga);
-          setPm25(res.data["PM:2.5"])
-          setPm10(res.data["PM:10"])
-          setEtanol(res.data["Alcohol-PPM"])
-          setLed1Status(res.data.led1);
-          setHeatStatus(res.data.heat);
-          
-          
+          setCases(res.data.cases);
+          setTodayCases(res.data.todayCases);
+          setDeaths(res.data.deaths);
+          Todaysetdeaths(res.data.todayDeaths);
+          setCasesPerM(res.data.casesPerOneMillion);
         });
+
       // }, 3000);
       setIntervalStarted(true);
-      }
+    }
     // }
-   
 
     const onFocus = () => {
-  
-     
       console.log("Tab is in focus");
       console.log(idVar);
     };
 
     const onBlur = () => {
       console.log("Tab is blurred");
-      
+
       console.log(idVar);
     };
 
     window.addEventListener("focus", onFocus);
     window.addEventListener("blur", onBlur);
-
-   
 
     // Specify how to clean up after this effect:
     return () => {
@@ -100,29 +112,29 @@ const [clicked, setclicked] = useState(false)
   return (
     <WrapperContent>
       <StyledButton
-      pointerEvent ={clicked ? "none" :"unset"}
-      status={HeatStatus ==="On" ? "green" :"red"}
+        pointerEvent={clicked ? "none" : "unset"}
+        status={HeatStatus === "On" ? "green" : "red"}
         onClick={() => {
-            setclicked(true);
-           console.log("clicked")
-          axios.get(`http://192.168.0.15/heat`).then(res => {
-            console.log(res.data);
-            setTemp(res.data.temperatura);
-            setHumidity(res.data.vlaga);
-            setPm25(res.data["PM:2.5"])
-            setPm10(res.data["PM:10"])
-            setEtanol(res.data["Alcohol-PPM"])
-            setLed1Status(res.data.led1);
-            setHeatStatus(res.data.heat);
-            setclicked(false);
-
-
-          }).catch(function (error) {
-            // handle error
-            console.log(error);
-            setclicked(false);
-
-          });
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`http://192.168.0.15/heat`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
         }}
         type="button"
         color="primary"
@@ -131,29 +143,29 @@ const [clicked, setclicked] = useState(false)
       </StyledButton>
 
       <StyledButton
-      pointerEvent ={clicked ? "none" :"unset"}
-      status={Led1Status ==="On" ? "green" :"red"}
+        pointerEvent={clicked ? "none" : "unset"}
+        status={Led1Status === "On" ? "green" : "red"}
         onClick={() => {
-            setclicked(true);
-           console.log("clicked")
-          axios.get(`http://192.168.0.15/led1`).then(res => {
-            console.log(res.data);
-            setTemp(res.data.temperatura);
-            setHumidity(res.data.vlaga);
-            setPm25(res.data["PM:2.5"])
-            setPm10(res.data["PM:10"])
-            setEtanol(res.data["Alcohol-PPM"])
-            setLed1Status(res.data.led1);
-            setHeatStatus(res.data.heat);
-            setclicked(false);
-
-
-          }).catch(function (error) {
-            // handle error
-            console.log(error);
-            setclicked(false);
-
-          });
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`http://192.168.0.15/led1`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
         }}
         type="button"
         color="primary"
@@ -161,30 +173,39 @@ const [clicked, setclicked] = useState(false)
         Light 1
       </StyledButton>
 
-
       <StyledButton
-      pointerEvent ={clicked ? "none" :"unset"}
-      // status={Led1Status ==="On" ? "green" :"red"}
+        pointerEvent={clicked ? "none" : "unset"}
+        // status={Led1Status ==="On" ? "green" :"red"}
         onClick={() => {
-            setclicked(true);
-           console.log("clicked")
-          axios.get(`http://192.168.0.15/`).then(res => {
-            console.log(res.data);
-            setTemp(res.data.temperatura);
-            setHumidity(res.data.vlaga);
-            setPm25(res.data["PM:2.5"])
-            setPm10(res.data["PM:10"])
-            setEtanol(res.data["Alcohol-PPM"])
-            setLed1Status(res.data.led1);
-            setclicked(false);
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`http://192.168.0.15/`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
 
-
-          }).catch(function (error) {
-            // handle error
-            console.log(error);
-            setclicked(false);
-
-          });
+          axios
+            .get(`https://coronavirus-19-api.herokuapp.com/countries/croatia`)
+            .then(res => {
+              setCases(res.data.cases);
+              setTodayCases(res.data.todayCases);
+              setDeaths(res.data.deaths);
+              Todaysetdeaths(res.data.todayDeaths);
+              setCasesPerM(res.data.casesPerOneMillion);
+            });
         }}
         type="button"
         color="primary"
@@ -195,12 +216,15 @@ const [clicked, setclicked] = useState(false)
       <TextContainer>
         <Text>Temperatura:{Temp} °C</Text>
         <Text>Vlažnost:{Humidity} %</Text>
-    <Text>PM2.5: {Pm25} pcs/0.01cf</Text>
-    <Text>PM10: {Pm10} pcs/0.01cf</Text>
-    <Text>Etanol: {Etanol} ‰ </Text>
-    
-
-
+        <Text>PM2.5: {Pm25} pcs/0.01cf</Text>
+        <Text>PM10: {Pm10} pcs/0.01cf</Text>
+        <Text>Etanol: {Etanol} ‰ </Text>
+        <Corona>CORONA HRVATSKA</Corona>
+        <div>Broj slucajeva:{Cases}</div>
+        <div>Broj slucajeva danas:{TodayCases}</div>
+        <div>Smrti:{Deaths}</div>
+        <div>Smrti danas {Todaydeaths}</div>
+        <div>casesPerOneMillion: {CasesPerM}</div>
       </TextContainer>
     </WrapperContent>
   );
