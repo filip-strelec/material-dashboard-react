@@ -61,7 +61,7 @@ const WindowFocusHandler = () => {
   useEffect(() => {
     if (!IntervalStarted) {
       // const interval = setInterval(() => {
-      axios.get(`http://192.168.0.15/`).then(res => {
+      axios.get(`http://192.168.0.28:1337/`).then(res => {
         console.log(res.data);
         setTemp(res.data.temperatura);
         setHumidity(res.data.vlaga);
@@ -118,7 +118,7 @@ const WindowFocusHandler = () => {
           setclicked(true);
           console.log("clicked");
           axios
-            .get(`http://192.168.0.15/heat`)
+            .get(`http://192.168.0.28:1337/heat`)
             .then(res => {
               console.log(res.data);
               setTemp(res.data.temperatura);
@@ -149,7 +149,7 @@ const WindowFocusHandler = () => {
           setclicked(true);
           console.log("clicked");
           axios
-            .get(`http://192.168.0.15/led1`)
+            .get(`http://192.168.0.28:1337/led1`)
             .then(res => {
               console.log(res.data);
               setTemp(res.data.temperatura);
@@ -180,7 +180,7 @@ const WindowFocusHandler = () => {
           setclicked(true);
           console.log("clicked");
           axios
-            .get(`http://192.168.0.15/`)
+            .get(`http://192.168.0.28:1337/`)
             .then(res => {
               console.log(res.data);
               setTemp(res.data.temperatura);
