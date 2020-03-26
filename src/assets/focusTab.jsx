@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import loading from './img/loading.svg'
 // import Button from "components/CustomButtons/Button.js";
 
 const WrapperContent = styled.div`
   margin-top: 100px;
   padding: 0 20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+
 `;
 const StyledButton = styled.button`
   padding: 20px;
   border-radius: 3px;
+  margin-bottom:22px;
   font-weight: 700;
   background-color: ${props => props.status};
   pointer-events: ${props => props.pointerEvent};
@@ -21,7 +27,11 @@ const TextContainer = styled.div`
 
   margin-top: 50px;
 `;
-
+const Image = styled.img`
+width:50px;
+align-self: center;
+opacity:${props => props.visibility};
+`
 const Corona = styled.div`
   margin-top: 20px;
   border-top: 2px solid black;
@@ -227,13 +237,17 @@ const WindowFocusHandler = () => {
       >
         Status
       </StyledButton>
+      <Image 
+        visibility={clicked ? "1" : "0"}
 
+        src={loading}></Image>
       <TextContainer>
         <Text>Temperatura:{Temp} °C</Text>
         <Text>Vlažnost:{Humidity} %</Text>
         <Text>PM2.5: {Pm25} pcs/0.01cf</Text>
         <Text>PM10: {Pm10} pcs/0.01cf</Text>
         <Text>Etanol: {Etanol} ‰ </Text>
+       
         <Corona>CORONA HRVATSKA</Corona>
         <div>Broj slucajeva:{Cases}</div>
         <div>Broj slucajeva danas:{TodayCases}</div>
