@@ -189,6 +189,7 @@ const WindowFocusHandler = () => {
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
               setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
               setclicked(false);
             })
             .catch(function(error) {
