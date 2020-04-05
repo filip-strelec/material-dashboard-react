@@ -57,6 +57,10 @@ const WindowFocusHandler = () => {
   const [Pm25, setPm25] = useState("0");
   const [Pm10, setPm10] = useState("0");
   const [Led1Status, setLed1Status] = useState(false);
+  const [Led2Status, setLed2Status] = useState(false);
+
+  const [Led3Status, setLed3Status] = useState(false);
+
   const [HeatStatus, setHeatStatus] = useState(false);
 
   const [IntervalStarted, setIntervalStarted] = useState(false);
@@ -79,6 +83,8 @@ const WindowFocusHandler = () => {
         setPm10(res.data["PM:10"]);
         setEtanol(res.data["Alcohol-PPM"]);
         setLed1Status(res.data.led1);
+        setLed3Status(res.data.led3);
+        setLed2Status(res.data.led2);
         setHeatStatus(res.data.heat);
       });
 
@@ -138,6 +144,8 @@ const WindowFocusHandler = () => {
               setEtanol(res.data["Alcohol-PPM"]);
               setLed1Status(res.data.led1);
               setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
               setclicked(false);
             })
             .catch(function(error) {
@@ -169,6 +177,8 @@ const WindowFocusHandler = () => {
               setEtanol(res.data["Alcohol-PPM"]);
               setLed1Status(res.data.led1);
               setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
               setclicked(false);
             })
             .catch(function(error) {
@@ -182,6 +192,76 @@ const WindowFocusHandler = () => {
       >
         Light 1
       </StyledButton>
+
+
+      <StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        status={Led2Status === "On" ? "green" : "red"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`http://192.168.0.28:1337/led2`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        Light 2
+      </StyledButton>
+
+
+      <StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        status={Led3Status === "On" ? "green" : "red"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`http://192.168.0.28:1337/led3`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        Light 3
+      </StyledButton>
+
+
 
       <StyledButton
         pointerEvent={clicked ? "none" : "unset"}
@@ -199,6 +279,8 @@ const WindowFocusHandler = () => {
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
               setLed1Status(res.data.led1);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
               setHeatStatus(res.data.heat);
               setclicked(false);
             })
