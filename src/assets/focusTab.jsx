@@ -71,6 +71,8 @@ const WindowFocusHandler = () => {
   const [Deaths, setDeaths] = useState("");
   const [Todaydeaths, Todaysetdeaths] = useState("");
   const [CasesPerM, setCasesPerM] = useState("");
+  const [DeathsG, setDeathsG] = useState("");
+  const [CasesG, setCasesG] = useState("");
 
   useEffect(() => {
     if (!IntervalStarted) {
@@ -98,6 +100,11 @@ const WindowFocusHandler = () => {
           Todaysetdeaths(res.data.todayDeaths);
           setCasesPerM(res.data.casesPerOneMillion);
         });
+
+      axios.get(`https://coronavirus-19-api.herokuapp.com/all`).then(res => {
+        setDeathsG(res.data.deaths);
+        setCasesG(res.data.cases);
+      });
 
       // }, 3000);
       setIntervalStarted(true);
@@ -299,6 +306,13 @@ const WindowFocusHandler = () => {
               Todaysetdeaths(res.data.todayDeaths);
               setCasesPerM(res.data.casesPerOneMillion);
             });
+
+          axios
+            .get(`https://coronavirus-19-api.herokuapp.com/all`)
+            .then(res => {
+              setDeathsG(res.data.deaths);
+              setCasesG(res.data.cases);
+            });
         }}
         type="button"
         color="primary"
@@ -322,6 +336,9 @@ const WindowFocusHandler = () => {
         <div>Smrti:{Deaths}</div>
         <div>Smrti danas {Todaydeaths}</div>
         <div>casesPerOneMillion: {CasesPerM}</div>
+        <Corona>CORONA SVIJET</Corona>
+        <div>Broj slucajeva: {CasesG}</div>
+        <div>Broj smrti: {DeathsG}</div>
       </TextContainer>
     </WrapperContent>
   );
