@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import loading from './img/loading.svg'
+import loading from "./img/loading.svg";
 // import Button from "components/CustomButtons/Button.js";
 
 const WrapperContent = styled.div`
   margin-top: 100px;
   padding: 0 20px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 const StyledButton = styled.button`
   padding: 20px;
   border-radius: 3px;
-  margin-bottom:22px;
+  margin-bottom: 22px;
   font-weight: 700;
   background-color: ${props => props.status};
   pointer-events: ${props => props.pointerEvent};
@@ -28,10 +27,10 @@ const TextContainer = styled.div`
   margin-top: 50px;
 `;
 const Image = styled.img`
-width:50px;
-align-self: center;
-opacity:${props => props.visibility};
-`
+  width: 50px;
+  align-self: center;
+  opacity: ${props => props.visibility};
+`;
 const Corona = styled.div`
   margin-top: 20px;
   border-top: 2px solid black;
@@ -73,11 +72,14 @@ const WindowFocusHandler = () => {
   const [CasesPerM, setCasesPerM] = useState("");
   const [DeathsG, setDeathsG] = useState("");
   const [CasesG, setCasesG] = useState("");
-
+  let port = process.env.REACT_APP_NODE_PORT;
+  console.log(port);
+  let url = `http://${process.env.REACT_APP_NODE_IP}:${port}/`;
+  console.log(url);
   useEffect(() => {
     if (!IntervalStarted) {
       // const interval = setInterval(() => {
-      axios.get(`http://192.168.0.28:1337/`).then(res => {
+      axios.get(url).then(res => {
         console.log(res.data);
         setTemp(res.data.temperatura);
         setHumidity(res.data.vlaga);
@@ -141,7 +143,7 @@ const WindowFocusHandler = () => {
           setclicked(true);
           console.log("clicked");
           axios
-            .get(`http://192.168.0.28:1337/heat`)
+            .get(`${url}/heat`)
             .then(res => {
               console.log(res.data);
               setTemp(res.data.temperatura);
@@ -174,7 +176,7 @@ const WindowFocusHandler = () => {
           setclicked(true);
           console.log("clicked");
           axios
-            .get(`http://192.168.0.28:1337/led1`)
+            .get(`${url}/led1`)
             .then(res => {
               console.log(res.data);
               setTemp(res.data.temperatura);
@@ -200,7 +202,6 @@ const WindowFocusHandler = () => {
         Light 1
       </StyledButton>
 
-
       <StyledButton
         pointerEvent={clicked ? "none" : "unset"}
         status={Led2Status === "On" ? "green" : "red"}
@@ -208,7 +209,7 @@ const WindowFocusHandler = () => {
           setclicked(true);
           console.log("clicked");
           axios
-            .get(`http://192.168.0.28:1337/led2`)
+            .get(`${url}/led2`)
             .then(res => {
               console.log(res.data);
               setTemp(res.data.temperatura);
@@ -234,7 +235,6 @@ const WindowFocusHandler = () => {
         Light 2
       </StyledButton>
 
-
       <StyledButton
         pointerEvent={clicked ? "none" : "unset"}
         status={Led3Status === "On" ? "green" : "red"}
@@ -242,7 +242,7 @@ const WindowFocusHandler = () => {
           setclicked(true);
           console.log("clicked");
           axios
-            .get(`http://192.168.0.28:1337/led3`)
+            .get(`${url}/led3`)
             .then(res => {
               console.log(res.data);
               setTemp(res.data.temperatura);
@@ -268,8 +268,6 @@ const WindowFocusHandler = () => {
         Light 3
       </StyledButton>
 
-
-
       <StyledButton
         pointerEvent={clicked ? "none" : "unset"}
         // status={Led1Status ==="On" ? "green" :"red"}
@@ -277,7 +275,7 @@ const WindowFocusHandler = () => {
           setclicked(true);
           console.log("clicked");
           axios
-            .get(`http://192.168.0.28:1337/`)
+            .get(`${url}/`)
             .then(res => {
               console.log(res.data);
               setTemp(res.data.temperatura);
@@ -319,17 +317,14 @@ const WindowFocusHandler = () => {
       >
         Status
       </StyledButton>
-      <Image 
-        visibility={clicked ? "1" : "0"}
-
-        src={loading}></Image>
+      <Image visibility={clicked ? "1" : "0"} src={loading}></Image>
       <TextContainer>
         <Text>Temperatura:{Temp} °C</Text>
         <Text>Vlažnost:{Humidity} %</Text>
         <Text>PM2.5: {Pm25} pcs/0.01cf</Text>
         <Text>PM10: {Pm10} pcs/0.01cf</Text>
         <Text>Etanol: {Etanol} ‰ </Text>
-       
+
         <Corona>CORONA HRVATSKA</Corona>
         <div>Broj slucajeva:{Cases}</div>
         <div>Broj slucajeva danas:{TodayCases}</div>
