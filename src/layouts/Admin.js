@@ -24,6 +24,9 @@ function UserGreeting(props) {
 
 function GuestGreeting(props) {
   let enteredName = prompt("password");
+  console.log("FILIP")
+  sessionStorage.setItem("password", enteredName);
+  sessionStorage.setItem("date", Date.now());
 
   while (
     sessionStorage.getItem("password") !== process.env.REACT_APP_PASSWORD
