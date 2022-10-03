@@ -74,7 +74,7 @@ const WindowFocusHandler = () => {
   const [CasesG, setCasesG] = useState("");
   let port = process.env.REACT_APP_NODE_PORT;
   console.log(port);
-  let url = `http://${process.env.REACT_APP_NODE_IP}:${port}/`;
+  let url = `http://${process.env.REACT_APP_NODE_IP}/`;
   console.log(url);
   useEffect(() => {
     if (!IntervalStarted) {
