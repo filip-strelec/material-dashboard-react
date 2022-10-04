@@ -72,14 +72,22 @@ const WindowFocusHandler = () => {
   const [CasesPerM, setCasesPerM] = useState("");
   const [DeathsG, setDeathsG] = useState("");
   const [CasesG, setCasesG] = useState("");
+  const [slider, setSlider] = useState(0);
   let port = process.env.REACT_APP_NODE_PORT;
   console.log(port);
   let url = `https://${process.env.REACT_APP_NODE_IP}`;
   console.log(url);
   useEffect(() => {
+console.log("FILIP TESTIRAM")
     if (!IntervalStarted) {
       console.log("FILIP VAZNO")
 
+      const slider = document.getElementById('heatSlider');
+
+      slider.oninput = ()=>{
+        console.log(slider.value)
+        setSlider(slider.value)
+      }
 
       setInterval(() => {
         axios
@@ -160,6 +168,10 @@ const WindowFocusHandler = () => {
 
   return (
     <WrapperContent>
+<div>{Number.parseInt(slider) === 0 ? "No Limit" : slider}</div>
+
+      <input id="heatSlider" type="range" min='0' max='180' defaultValue='0' step='5' ></input>
+      <br></br> 
       <StyledButton
         pointerEvent={clicked ? "none" : "unset"}
         status={HeatStatus === "On" ? "green" : "red"}
@@ -167,8 +179,9 @@ const WindowFocusHandler = () => {
           setclicked(true);
           console.log("clicked");
           axios
-            .get(`${url}/heat`)
+            .get(`${url}/heat?timeout=${slider}`)
             .then(res => {
+              
               console.log(res.data);
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
