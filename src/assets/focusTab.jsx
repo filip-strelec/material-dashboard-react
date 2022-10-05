@@ -101,7 +101,7 @@ console.log("FILIP TESTIRAM")
           setTemp(res.data.temperatura);
           setHumidity(res.data.vlaga);
           setHeatingTimeout(res.data.timeoutDate);
-          setHeatingTimeoutString(`Hours: ${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()/60000)} Minutes:${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()%60000)} `)
+setHeatingTimeoutString(heatingTimeout);
           setPm25(res.data["PM:2.5"]);
           setPm10(res.data["PM:10"]);
           setEtanol(res.data["Alcohol-PPM"]);
@@ -122,7 +122,7 @@ console.log("FILIP TESTIRAM")
         setTemp(res.data.temperatura);
         setHumidity(res.data.vlaga);
         setHeatingTimeout(res.data.timeoutDate);
-        setHeatingTimeoutString(`Hours: ${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()/60000)} Minutes:${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()%60000)} `)
+setHeatingTimeoutString(heatingTimeout);
 
         setPm25(res.data["PM:2.5"]);
         setPm10(res.data["PM:10"]);
