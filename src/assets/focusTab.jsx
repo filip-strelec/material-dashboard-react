@@ -74,7 +74,6 @@ const WindowFocusHandler = () => {
   const [CasesG, setCasesG] = useState("");
   const [slider, setSlider] = useState(0);
   const [heatingTimeout, setHeatingTimeout] = useState(0);
-  const [heatingTimeoutString, setHeatingTimeoutString] = useState("");
   let port = process.env.REACT_APP_NODE_PORT;
   console.log(port);
   let url = `https://${process.env.REACT_APP_NODE_IP}`;
@@ -95,13 +94,10 @@ console.log("FILIP TESTIRAM")
         axios
         .get(`${url}/refresh`)
         .then(res => {
-
-          
           console.log(res.data);
           setTemp(res.data.temperatura);
           setHumidity(res.data.vlaga);
           setHeatingTimeout(res.data.timeoutDate);
-setHeatingTimeoutString(heatingTimeout);
           setPm25(res.data["PM:2.5"]);
           setPm10(res.data["PM:10"]);
           setEtanol(res.data["Alcohol-PPM"]);
@@ -122,8 +118,6 @@ setHeatingTimeoutString(heatingTimeout);
         setTemp(res.data.temperatura);
         setHumidity(res.data.vlaga);
         setHeatingTimeout(res.data.timeoutDate);
-setHeatingTimeoutString(heatingTimeout);
-
         setPm25(res.data["PM:2.5"]);
         setPm10(res.data["PM:10"]);
         setEtanol(res.data["Alcohol-PPM"]);
@@ -196,8 +190,6 @@ setHeatingTimeoutString(heatingTimeout);
               setHumidity(res.data.vlaga);
               setPm25(res.data["PM:2.5"]);
               setHeatingTimeout(res.data.timeoutDate);
-setHeatingTimeoutString(heatingTimeout);
-
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
               setLed1Status(res.data.led1);
@@ -231,8 +223,6 @@ setHeatingTimeoutString(heatingTimeout);
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
               setHeatingTimeout(res.data.timeoutDate);
-setHeatingTimeoutString(heatingTimeout);
-
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -267,8 +257,6 @@ setHeatingTimeoutString(heatingTimeout);
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
               setHeatingTimeout(res.data.timeoutDate);
-setHeatingTimeoutString(heatingTimeout);
-
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -303,8 +291,6 @@ setHeatingTimeoutString(heatingTimeout);
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
               setHeatingTimeout(res.data.timeoutDate);
-setHeatingTimeoutString(heatingTimeout);
-
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -339,7 +325,7 @@ setHeatingTimeoutString(heatingTimeout);
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
               setHeatingTimeout(res.data.timeoutDate);
-setHeatingTimeoutString(heatingTimeout);
+              console.log("FILIP VAZNO", heatingTimeout, res.data.timeoutDate)
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -381,7 +367,7 @@ setHeatingTimeoutString(heatingTimeout);
       </StyledButton>
       <Image visibility={clicked ? "1" : "0"} src={loading}></Image>
       <TextContainer>
-        {( heatingTimeout!=0 ) &&(<Text>Heating timeout:{heatingTimeoutString}</Text>)}
+        {( heatingTimeout!=0 ) &&(<Text>heating Timeout H: ( {Math.floor((new Date(heatingTimeout - new Date().getTime()).getTime())/60000)} m: {(new Date(heatingTimeout - new Date().getTime()).getTime()) % 60} </Text>)}
         <Text>Temperatura:{Temp} °C</Text>
         <Text>Vlažnost:{Humidity} %</Text>
         <Text>PM2.5: {Pm25} pcs/0.01cf</Text>
