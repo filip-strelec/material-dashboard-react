@@ -367,7 +367,7 @@ console.log("FILIP TESTIRAM")
       </StyledButton>
       <Image visibility={clicked ? "1" : "0"} src={loading}></Image>
       <TextContainer>
-        {( heatingTimeout!=0 ) &&(<Text>heating Timeout H: ( {Math.floor((new Date(heatingTimeout - new Date().getTime()).getTime())/60000)} m: {(new Date(heatingTimeout - new Date().getTime()).getTime())/60000} </Text>)}
+        {( heatingTimeout!=0 ) &&(<Text>heating Timeout H: ( {Math.floor((new Date(heatingTimeout - new Date().getTime()).getTime())/60000)} m: {(new Date(heatingTimeout - new Date().getTime()).getTime()) % 60000} </Text>)}
         <Text>Temperatura:{Temp} °C</Text>
         <Text>Vlažnost:{Humidity} %</Text>
         <Text>PM2.5: {Pm25} pcs/0.01cf</Text>
