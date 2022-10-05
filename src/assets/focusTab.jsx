@@ -72,9 +72,8 @@ const WindowFocusHandler = () => {
   const [CasesPerM, setCasesPerM] = useState("");
   const [DeathsG, setDeathsG] = useState("");
   const [CasesG, setCasesG] = useState("");
-  const [slider, setSlider] = useState();
+  const [slider, setSlider] = useState(0);
   const [heatingTimeout, setHeatingTimeout] = useState(0);
-  let sliderElement;
   let port = process.env.REACT_APP_NODE_PORT;
   console.log(port);
   let url = `https://${process.env.REACT_APP_NODE_IP}`;
@@ -82,7 +81,7 @@ const WindowFocusHandler = () => {
   useEffect(() => {
     if (!IntervalStarted) {
 
-       sliderElement = document.getElementById('heatSlider');
+      const sliderElement = document.getElementById('heatSlider');
       setSlider(sliderElement.value);
       console.log("FILIP SLIDER", slider, sliderElement.value);
       sliderElement.oninput = ()=>{
@@ -176,7 +175,7 @@ const WindowFocusHandler = () => {
 
   return (
     <WrapperContent>
-<div>{Number.parseInt(sliderElement.value) === 0 ? "No Limit" : `${sliderElement.value} (minutes)`}</div>
+<div>{Number.parseInt(slider) === 0 ? "No Limit" : `${slider} (minutes)`}</div>
 
       <input id="heatSlider" type="range" min='0' max='180' defaultValue='0' step='5' ></input>
       <br></br> 
@@ -188,7 +187,7 @@ const WindowFocusHandler = () => {
           
           console.log("clicked");
           axios
-            .get(`${url}/heat?timeout=${sliderElement.value}`)
+            .get(`${url}/heat?timeout=${slider}`)
             .then(res => {
               
               console.log(res.data);
