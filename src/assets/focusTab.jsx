@@ -184,7 +184,8 @@ const WindowFocusHandler = () => {
         status={HeatStatus === "On" ? "green" : "red"}
         onClick={() => {
           setclicked(true);
-          
+          const sliderElement = document.getElementById('heatSlider');
+          setSlider(sliderElement.value);
           console.log("clicked");
           axios
             .get(`${url}/heat?timeout=${slider}`)
