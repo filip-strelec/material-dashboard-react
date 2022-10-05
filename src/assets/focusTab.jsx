@@ -190,6 +190,7 @@ console.log("FILIP TESTIRAM")
               setHumidity(res.data.vlaga);
               setPm25(res.data["PM:2.5"]);
               res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
+              console.log("FILIP", heatingTimeout)
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
               setLed1Status(res.data.led1);
