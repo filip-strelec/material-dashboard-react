@@ -97,7 +97,7 @@ console.log("FILIP TESTIRAM")
           console.log(res.data);
           setTemp(res.data.temperatura);
           setHumidity(res.data.vlaga);
-          res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
+          setHeatingTimeout(res.data.timeoutDate);
           setPm25(res.data["PM:2.5"]);
           setPm10(res.data["PM:10"]);
           setEtanol(res.data["Alcohol-PPM"]);
@@ -117,7 +117,7 @@ console.log("FILIP TESTIRAM")
         console.log(res.data);
         setTemp(res.data.temperatura);
         setHumidity(res.data.vlaga);
-        res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
+        setHeatingTimeout(res.data.timeoutDate);
         setPm25(res.data["PM:2.5"]);
         setPm10(res.data["PM:10"]);
         setEtanol(res.data["Alcohol-PPM"]);
@@ -189,8 +189,7 @@ console.log("FILIP TESTIRAM")
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
               setPm25(res.data["PM:2.5"]);
-              res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
-              console.log("FILIP", heatingTimeout, res.data.timeoutDate)
+              setHeatingTimeout(res.data.timeoutDate);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
               setLed1Status(res.data.led1);
@@ -223,7 +222,7 @@ console.log("FILIP TESTIRAM")
               console.log(res.data);
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
-              res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
+              setHeatingTimeout(res.data.timeoutDate);
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -257,7 +256,7 @@ console.log("FILIP TESTIRAM")
               console.log(res.data);
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
-              res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
+              setHeatingTimeout(res.data.timeoutDate);
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -291,7 +290,7 @@ console.log("FILIP TESTIRAM")
               console.log(res.data);
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
-              res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
+              setHeatingTimeout(res.data.timeoutDate);
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -325,7 +324,8 @@ console.log("FILIP TESTIRAM")
               console.log(res.data);
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
-              res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
+              setHeatingTimeout(res.data.timeoutDate);
+              console.log("FILIP VAZNO", heatingTimeout, res.data.timeoutDate)
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -367,7 +367,7 @@ console.log("FILIP TESTIRAM")
       </StyledButton>
       <Image visibility={clicked ? "1" : "0"} src={loading}></Image>
       <TextContainer>
-        {( heatingTimeout!=0 ) &&(<Text>heating Timeout {new Date(heatingTimeout).getTime} </Text>)}
+        {( heatingTimeout!=0 ) &&(<Text>heating Timeout {heatingTimeout} </Text>)}
         <Text>Temperatura:{Temp} °C</Text>
         <Text>Vlažnost:{Humidity} %</Text>
         <Text>PM2.5: {Pm25} pcs/0.01cf</Text>
