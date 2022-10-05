@@ -87,10 +87,10 @@ const WindowFocusHandler = () => {
       sliderElement.oninput = ()=>{
        
         setSlider(sliderElement.value);
-        setTimeout(()=>{
+    
           console.log("FILIP SLIDER on Change", slider, sliderElement.value);
 
-        },200)
+   
 
       }
 
@@ -171,7 +171,7 @@ const WindowFocusHandler = () => {
       window.removeEventListener("focus", onFocus);
       window.removeEventListener("blur", onBlur);
     };
-  });
+  }, []);
 
   return (
     <WrapperContent>
