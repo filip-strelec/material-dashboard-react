@@ -74,6 +74,7 @@ const WindowFocusHandler = () => {
   const [CasesG, setCasesG] = useState("");
   const [slider, setSlider] = useState(0);
   const [heatingTimeout, setHeatingTimeout] = useState(0);
+  const [heatingTimeoutString, setHeatingTimeoutString] = useState("");
   let port = process.env.REACT_APP_NODE_PORT;
   console.log(port);
   let url = `https://${process.env.REACT_APP_NODE_IP}`;
@@ -94,10 +95,13 @@ console.log("FILIP TESTIRAM")
         axios
         .get(`${url}/refresh`)
         .then(res => {
+
+          
           console.log(res.data);
           setTemp(res.data.temperatura);
           setHumidity(res.data.vlaga);
           setHeatingTimeout(res.data.timeoutDate);
+          setHeatingTimeoutString(`Hours: ${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()/60000)} Minutes:${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()%60000)} `)
           setPm25(res.data["PM:2.5"]);
           setPm10(res.data["PM:10"]);
           setEtanol(res.data["Alcohol-PPM"]);
@@ -118,6 +122,8 @@ console.log("FILIP TESTIRAM")
         setTemp(res.data.temperatura);
         setHumidity(res.data.vlaga);
         setHeatingTimeout(res.data.timeoutDate);
+        setHeatingTimeoutString(`Hours: ${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()/60000)} Minutes:${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()%60000)} `)
+
         setPm25(res.data["PM:2.5"]);
         setPm10(res.data["PM:10"]);
         setEtanol(res.data["Alcohol-PPM"]);
@@ -190,6 +196,8 @@ console.log("FILIP TESTIRAM")
               setHumidity(res.data.vlaga);
               setPm25(res.data["PM:2.5"]);
               setHeatingTimeout(res.data.timeoutDate);
+              setHeatingTimeoutString(`Hours: ${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()/60000)} Minutes:${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()%60000)} `)
+
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
               setLed1Status(res.data.led1);
@@ -223,6 +231,8 @@ console.log("FILIP TESTIRAM")
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
               setHeatingTimeout(res.data.timeoutDate);
+              setHeatingTimeoutString(`Hours: ${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()/60000)} Minutes:${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()%60000)} `)
+
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -257,6 +267,8 @@ console.log("FILIP TESTIRAM")
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
               setHeatingTimeout(res.data.timeoutDate);
+              setHeatingTimeoutString(`Hours: ${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()/60000)} Minutes:${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()%60000)} `)
+
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -291,6 +303,8 @@ console.log("FILIP TESTIRAM")
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
               setHeatingTimeout(res.data.timeoutDate);
+              setHeatingTimeoutString(`Hours: ${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()/60000)} Minutes:${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()%60000)} `)
+
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -325,7 +339,7 @@ console.log("FILIP TESTIRAM")
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
               setHeatingTimeout(res.data.timeoutDate);
-              console.log("FILIP VAZNO", heatingTimeout, res.data.timeoutDate)
+              setHeatingTimeoutString(`Hours: ${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()/60000)} Minutes:${Math.floor(new Date(heatingTimeout - new Date().getTime()).getTime()%60000)} `)
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -367,7 +381,7 @@ console.log("FILIP TESTIRAM")
       </StyledButton>
       <Image visibility={clicked ? "1" : "0"} src={loading}></Image>
       <TextContainer>
-        {( heatingTimeout!=0 ) &&(<Text>heating Timeout H: ( {Math.floor((new Date(heatingTimeout - new Date().getTime()).getTime())/60000)} m: {(new Date(heatingTimeout - new Date().getTime()).getTime()) % 60000} </Text>)}
+        {( heatingTimeout!=0 ) &&(<Text>Heating timeout:{heatingTimeoutString}</Text>)}
         <Text>Temperatura:{Temp} °C</Text>
         <Text>Vlažnost:{Humidity} %</Text>
         <Text>PM2.5: {Pm25} pcs/0.01cf</Text>
