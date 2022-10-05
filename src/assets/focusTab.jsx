@@ -73,6 +73,7 @@ const WindowFocusHandler = () => {
   const [DeathsG, setDeathsG] = useState("");
   const [CasesG, setCasesG] = useState("");
   const [slider, setSlider] = useState(0);
+  const [heatingTimeout, setHeatingTimeout] = useState(0);
   let port = process.env.REACT_APP_NODE_PORT;
   console.log(port);
   let url = `https://${process.env.REACT_APP_NODE_IP}`;
@@ -96,6 +97,7 @@ console.log("FILIP TESTIRAM")
           console.log(res.data);
           setTemp(res.data.temperatura);
           setHumidity(res.data.vlaga);
+          res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
           setPm25(res.data["PM:2.5"]);
           setPm10(res.data["PM:10"]);
           setEtanol(res.data["Alcohol-PPM"]);
@@ -115,6 +117,7 @@ console.log("FILIP TESTIRAM")
         console.log(res.data);
         setTemp(res.data.temperatura);
         setHumidity(res.data.vlaga);
+        res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
         setPm25(res.data["PM:2.5"]);
         setPm10(res.data["PM:10"]);
         setEtanol(res.data["Alcohol-PPM"]);
@@ -168,7 +171,7 @@ console.log("FILIP TESTIRAM")
 
   return (
     <WrapperContent>
-<div>{Number.parseInt(slider) === 0 ? "No Limit" : slider}</div>
+<div>{Number.parseInt(slider) === 0 ? "No Limit" : `${slider} (minutes)`}</div>
 
       <input id="heatSlider" type="range" min='0' max='180' defaultValue='0' step='5' ></input>
       <br></br> 
@@ -186,6 +189,7 @@ console.log("FILIP TESTIRAM")
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
               setPm25(res.data["PM:2.5"]);
+              res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
               setLed1Status(res.data.led1);
@@ -218,6 +222,7 @@ console.log("FILIP TESTIRAM")
               console.log(res.data);
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
+              res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -251,6 +256,7 @@ console.log("FILIP TESTIRAM")
               console.log(res.data);
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
+              res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -284,6 +290,7 @@ console.log("FILIP TESTIRAM")
               console.log(res.data);
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
+              res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -317,6 +324,7 @@ console.log("FILIP TESTIRAM")
               console.log(res.data);
               setTemp(res.data.temperatura);
               setHumidity(res.data.vlaga);
+              res.data.timeoutDate ? setHeatingTimeout(res.data.timeoutDate) : setHeatingTimeout(0);
               setPm25(res.data["PM:2.5"]);
               setPm10(res.data["PM:10"]);
               setEtanol(res.data["Alcohol-PPM"]);
@@ -358,6 +366,7 @@ console.log("FILIP TESTIRAM")
       </StyledButton>
       <Image visibility={clicked ? "1" : "0"} src={loading}></Image>
       <TextContainer>
+        {( heatingTimeout!=0 ) &&(<Text>heating Timeout ({new Date( heatingTimeout - new Date().getTime()) }) </Text>)}
         <Text>Temperatura:{Temp} °C</Text>
         <Text>Vlažnost:{Humidity} %</Text>
         <Text>PM2.5: {Pm25} pcs/0.01cf</Text>
