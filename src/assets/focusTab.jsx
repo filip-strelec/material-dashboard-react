@@ -73,7 +73,7 @@ const WindowFocusHandler = () => {
   const [DeathsG, setDeathsG] = useState("");
   const [CasesG, setCasesG] = useState("");
   const [slider, setSlider] = useState(0);
-  const [heatingTimeout, setHeatingTimeout] = useState(0);
+  const [heatingTimeout, setHeatingTimeout] = useState();
   let port = process.env.REACT_APP_NODE_PORT;
   console.log(port);
   let url = `https://${process.env.REACT_APP_NODE_IP}`;
