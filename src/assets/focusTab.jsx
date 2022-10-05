@@ -185,7 +185,7 @@ const WindowFocusHandler = () => {
         onClick={() => {
           setclicked(true);
           
-          console.log("clicked");
+          console.log("CLICKED FILIP HEAT", slider);
           axios
             .get(`${url}/heat?timeout=${slider}`)
             .then(res => {
