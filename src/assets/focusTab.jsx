@@ -177,7 +177,7 @@ const WindowFocusHandler = () => {
     <WrapperContent>
 <div>{Number.parseInt(slider) === 0 ? "No Limit" : `${slider} (minutes)`}</div>
 
-      <input id="heatSlider" type="range" min='0' max='180' defaultValue='0' step='5' ></input>
+      <input id="heatSlider" type="range" min='0' max='360' defaultValue='0' step='5' ></input>
       <br></br> 
       <StyledButton
         pointerEvent={clicked ? "none" : "unset"}
