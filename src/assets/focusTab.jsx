@@ -367,7 +367,7 @@ console.log("FILIP TESTIRAM")
       </StyledButton>
       <Image visibility={clicked ? "1" : "0"} src={loading}></Image>
       <TextContainer>
-        {( heatingTimeout!=0 ) &&(<Text>{heatingTimeout}</Text>)}
+        {( heatingTimeout!=0 ) &&(<Text>Heating timeout: {new Date(heatingTimeout).toTimeString().slice(0,9)}</Text>)}
         <Text>Temperatura:{Temp} °C</Text>
         <Text>Vlažnost:{Humidity} %</Text>
         <Text>PM2.5: {Pm25} pcs/0.01cf</Text>
