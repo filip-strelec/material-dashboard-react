@@ -79,16 +79,17 @@ const WindowFocusHandler = () => {
   let url = `https://${process.env.REACT_APP_NODE_IP}`;
   console.log(url);
   useEffect(() => {
-    const sliderElement = document.getElementById('heatSlider');
-    setSlider(sliderElement.value);
-    sliderElement.oninput = ()=>{
-      console.log(slider.value)
-      setSlider(sliderElement.value);
-    }
     if (!IntervalStarted) {
 
-     
-     
+      const sliderElement = document.getElementById('heatSlider');
+      setSlider(sliderElement.value);
+      console.log("FILIP SLIDER", slider);
+      sliderElement.oninput = ()=>{
+       
+        setSlider(sliderElement.value);
+        console.log("FILIP SLIDER on Change", slider);
+
+      }
 
       setInterval(() => {
         axios
