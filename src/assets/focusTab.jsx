@@ -85,7 +85,7 @@ console.log("FILIP TESTIRAM")
 
       const sliderElement = document.getElementById('heatSlider');
       setSlider(sliderElement.value);
-      slider.oninput = ()=>{
+      sliderElement.oninput = ()=>{
         console.log(slider.value)
         setSlider(sliderElement.value);
       }
