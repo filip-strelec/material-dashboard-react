@@ -86,10 +86,11 @@ const WindowFocusHandler = () => {
       console.log("FILIP SLIDER", slider, sliderElement.value);
       sliderElement.oninput = ()=>{
        
-        setSlider(sliderElement.value).then(()=>{
+        setSlider(sliderElement.value);
+        setTimeout(()=>{
           console.log("FILIP SLIDER on Change", slider, sliderElement.value);
 
-        });
+        },200)
 
       }
 
