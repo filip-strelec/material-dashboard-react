@@ -31,6 +31,33 @@ const Image = styled.img`
   align-self: center;
   opacity: ${props => props.visibility};
 `;
+
+const IrRemoteWrapper = styled.div`
+position: absolute;
+width: 97.1vw;
+display:flex;
+flex-direction:row;
+flex-wrap:wrap;
+background: rgba(140,140,140, 1);
+border-radius:8px;
+justify-content:space-around;
+`
+
+const IndividualRemoteWrapper = styled.div`
+min-width:300px;
+text-align:center;  
+display:flex;
+flex-direction:column;
+
+`
+
+const CloseIr = styled.div`
+position:absolute;
+font-weight:bolder;
+right:20px;
+top:20px;
+cursor:pointer;
+`
 const Corona = styled.div`
   margin-top: 20px;
   border-top: 2px solid black;
@@ -57,7 +84,7 @@ const WindowFocusHandler = () => {
   const [Pm10, setPm10] = useState("0");
   const [Led1Status, setLed1Status] = useState(false);
   const [Led2Status, setLed2Status] = useState(false);
-
+  const [showIrRemote, setShowIrRemote] = useState(false);
   const [Led3Status, setLed3Status] = useState(false);
 
   const [HeatStatus, setHeatStatus] = useState(false);
@@ -117,19 +144,24 @@ const WindowFocusHandler = () => {
       }, 5000);
 
       // const interval = setInterval(() => {
-      axios.get(url).then(res => {
-        console.log(res.data);
-        setTemp(res.data.temperatura);
-        setHumidity(res.data.vlaga);
-        setHeatingTimeout(res.data.timeoutDate);
-        setPm25(res.data["PM:2.5"]);
-        setPm10(res.data["PM:10"]);
-        setEtanol(res.data["Alcohol-PPM"]);
-        setLed1Status(res.data.led1);
-        setLed3Status(res.data.led3);
-        setLed2Status(res.data.led2);
-        setHeatStatus(res.data.heat);
-      });
+        try{
+          axios.get(url).then(res => {
+            console.log(res.data);
+            setTemp(res.data.temperatura);
+            setHumidity(res.data.vlaga);
+            setHeatingTimeout(res.data.timeoutDate);
+            setPm25(res.data["PM:2.5"]);
+            setPm10(res.data["PM:10"]);
+            setEtanol(res.data["Alcohol-PPM"]);
+            setLed1Status(res.data.led1);
+            setLed3Status(res.data.led3);
+            setLed2Status(res.data.led2);
+            setHeatStatus(res.data.heat);
+          });
+        }
+catch(e){
+console.log(e)
+}
 
       // axios
       //   .get(`https://coronavirus-19-api.herokuapp.com/countries/croatia`)
@@ -175,6 +207,446 @@ const WindowFocusHandler = () => {
 
   return (
     <WrapperContent>
+      {showIrRemote && <IrRemoteWrapper>
+        <CloseIr onClick={()=>{setShowIrRemote(false)}}>X</CloseIr>
+        
+
+<IndividualRemoteWrapper>
+<h3>Stereo</h3>
+<StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`${url}/irsend?address=0x7484&code=0xFF&protocol=nec`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        POWER
+      </StyledButton>
+<StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`${url}/irsend?address=0x7080&code=0xC7&protocol=nec`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        Volume UP
+      </StyledButton>
+      <StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`${url}/irsend?address=0x7080&code=0xC8&protocol=nec`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        Volume DOWN
+      </StyledButton>
+      <StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`${url}/irsend?address=0x7080&code=0xB9&protocol=nec`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        MUTE/UNMUTE
+      </StyledButton>
+      <StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`${url}/irsend?address=0x7080&code=0xB4&protocol=nec`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        AUX
+      </StyledButton>
+      <StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`${url}/irsend?address=0x7080&code=0xED&protocol=nec`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        FM RADIO
+      </StyledButton> 
+      <StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`${url}/irsend?address=0x7080&code=0xBA&protocol=nec`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        Bluetooth
+      </StyledButton> 
+      <StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`${url}/irsend?address=0x7080&code=0xBA&repeat&protocol=nec`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        Bluetooth Pair
+      </StyledButton> 
+
+      <StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`${url}/irsend?address=0x7080&code=0xAE&protocol=nec`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        Previous
+      </StyledButton> 
+
+      <StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`${url}/irsend?address=0x7080&code=0xA8&protocol=nec`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        Play/pause
+      </StyledButton> 
+
+      <StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`${url}/irsend?address=0x7080&code=0xAF&protocol=nec`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        Next
+      </StyledButton> 
+
+</IndividualRemoteWrapper>
+
+<IndividualRemoteWrapper>
+<h3>Climate</h3>
+
+<StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`${url}/irsend?address=0x88&code=0x34&protocol=lg`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        CLIMATE ON
+      </StyledButton>
+
+      <StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          axios
+            .get(`${url}/irsend?address=0x88&code=0xC005&protocol=lg`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        CLIMATE OFF
+      </StyledButton>
+
+
+
+
+
+</IndividualRemoteWrapper>
+
+        </IrRemoteWrapper>}
 <div>{Number.parseInt(slider) === 0 ? "No Limit" : `${slider} (minutes)`}</div>
 
       <input id="heatSlider" type="range" min='0' max='360' defaultValue='0' step='5' ></input>
@@ -353,6 +825,28 @@ const WindowFocusHandler = () => {
       >
         Status
       </StyledButton>
+
+
+
+      <StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        // status={Led1Status ==="On" ? "green" :"red"}
+        onClick={() => {
+     console.log("ir remote");
+setShowIrRemote(true);
+      
+        }}
+        type="button"
+        color="primary"
+      >
+        IR remote
+      </StyledButton>
+
+
+
+
+
+
 
       <StyledButton
         pointerEvent={clicked ? "none" : "unset"}

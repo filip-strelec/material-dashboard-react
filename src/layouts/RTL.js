@@ -94,17 +94,6 @@ export default function RTL({ ...rest }) {
   }, [mainPanel]);
   return (
     <div className={classes.wrapper}>
-      <Sidebar
-        routes={routes}
-        logoText={"الإبداعية تيم"}
-        logo={logo}
-        image={image}
-        handleDrawerToggle={handleDrawerToggle}
-        open={mobileOpen}
-        color={color}
-        rtlActive
-        {...rest}
-      />
       <div className={classes.mainPanel} ref={mainPanel}>
         <Navbar
           routes={routes}
