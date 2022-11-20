@@ -99,8 +99,27 @@ const WindowFocusHandler = () => {
   const [CasesPerM, setCasesPerM] = useState("");
   const [DeathsG, setDeathsG] = useState("");
   const [CasesG, setCasesG] = useState("");
+  const [sliderClimate, setSliderClimate] = useState(0);
   const [slider, setSlider] = useState(0);
   const [heatingTimeout, setHeatingTimeout] = useState(0);
+  const tempCodes = {
+    18:"0x834",
+    19:"0x844",
+    20:"0x854",
+    21:"0x864",
+    22:"0x874",
+    23:"0x884",
+    24:"0x894",
+    25:"0x8A4",
+    26:"0x8B4",
+    27:"0x8C4",
+    28:"0x8D4",
+    29:"0x8E4",
+    30:"0x8F4",
+
+
+
+  }
   let port = process.env.REACT_APP_NODE_PORT;
   console.log(port);
   let url = `https://${process.env.REACT_APP_NODE_IP}`;
@@ -111,6 +130,8 @@ const WindowFocusHandler = () => {
       const sliderElement = document.getElementById('heatSlider');
       setSlider(sliderElement.value);
       console.log("FILIP SLIDER", slider, sliderElement.value);
+
+
       sliderElement.oninput = ()=>{
        
         setSlider(sliderElement.value);
@@ -574,6 +595,7 @@ console.log(e)
 <IndividualRemoteWrapper>
 <h3>Climate</h3>
 
+
 <StyledButton
         pointerEvent={clicked ? "none" : "unset"}
         onClick={() => {
@@ -600,7 +622,29 @@ console.log(e)
               console.log(error);
               setclicked(false);
             });
+                   axios
+            .get(`${url}/irsend?address=0x88&code=0x34&protocol=lg`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
         }}
+        
         type="button"
         color="primary"
       >
@@ -633,11 +677,92 @@ console.log(e)
               console.log(error);
               setclicked(false);
             });
+            axios
+            .get(`${url}/irsend?address=0x88&code=0xC005&protocol=lg`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
         }}
         type="button"
         color="primary"
       >
         CLIMATE OFF
+      </StyledButton>
+
+
+
+      Set Temperature {sliderClimate}
+<input id="climateSlider" type="range" min='18' max='30' defaultValue='20' step='1' ></input>
+
+<StyledButton
+        pointerEvent={clicked ? "none" : "unset"}
+        onClick={() => {
+          setclicked(true);
+          console.log("clicked");
+          console.log(`${url}/irsend?address=0x88&code=${tempCodes[sliderClimate]}&protocol=lg`);
+          axios
+            .get(`${url}/irsend?address=0x88&code=${tempCodes[sliderClimate]}&protocol=lg`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+            axios
+            .get(`${url}/irsend?address=0x88&code=${tempCodes[sliderClimate]}&protocol=lg`)
+            .then(res => {
+              console.log(res.data);
+              setTemp(res.data.temperatura);
+              setHumidity(res.data.vlaga);
+              setHeatingTimeout(res.data.timeoutDate);
+              setPm25(res.data["PM:2.5"]);
+              setPm10(res.data["PM:10"]);
+              setEtanol(res.data["Alcohol-PPM"]);
+              setLed1Status(res.data.led1);
+              setHeatStatus(res.data.heat);
+              setLed3Status(res.data.led3);
+              setLed2Status(res.data.led2);
+              setclicked(false);
+            })
+            .catch(function(error) {
+              // handle error
+              console.log(error);
+              setclicked(false);
+            });
+        }}
+        type="button"
+        color="primary"
+      >
+        Apply temp
       </StyledButton>
 
 
@@ -834,6 +959,26 @@ console.log(e)
         onClick={() => {
      console.log("ir remote");
 setShowIrRemote(true);
+
+setTimeout(()=>{
+
+  const climateSlider = document.getElementById('climateSlider');
+  console.log("FILIP SLIDER CLIMATE", climateSlider.value);
+  setSliderClimate(climateSlider.value);
+
+  climateSlider.oninput = ()=>{
+   
+    setSliderClimate(climateSlider.value);
+
+  
+      console.log("FILIP SLIDER on Change", climateSlider.value);
+  
+  
+  
+  }
+
+},100);
+
       
         }}
         type="button"
