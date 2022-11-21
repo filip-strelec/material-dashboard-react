@@ -34,7 +34,9 @@ const Image = styled.img`
 
 const IrRemoteWrapper = styled.div`
 position: absolute;
-width: 97.1vw;
+width: 100%;
+left:0;
+padding-bottom:24px;
 display:flex;
 flex-direction:row;
 flex-wrap:wrap;
