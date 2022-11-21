@@ -52,6 +52,13 @@ display:flex;
 flex-direction:column;
 
 `
+const StereoButtonWrapper = styled.div`
+display:flex;
+flex-direction:column;
+flex-wrap:wrap;
+height:500px;
+`
+
 
 const CloseIr = styled.div`
 position:absolute;
@@ -233,9 +240,9 @@ console.log(e)
       {showIrRemote && <IrRemoteWrapper>
         <CloseIr onClick={()=>{setShowIrRemote(false)}}>X</CloseIr>
         
-
 <IndividualRemoteWrapper>
 <h3>Stereo</h3>
+<StereoButtonWrapper>
 <StyledButton
         pointerEvent={clicked ? "none" : "unset"}
         onClick={() => {
@@ -591,7 +598,7 @@ console.log(e)
       >
         Next
       </StyledButton> 
-
+      </StereoButtonWrapper>
 </IndividualRemoteWrapper>
 
 <IndividualRemoteWrapper>
