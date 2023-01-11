@@ -138,7 +138,7 @@ const WindowFocusHandler = () => {
 
       const sliderElement = document.getElementById('heatSlider');
       setSlider(sliderElement.value);
-      console.log("FILIP SLIDER", slider, sliderElement.value);
+      console.log("FILIasdasdP SLIDER", slider, sliderElement.value);
 
 
       sliderElement.oninput = ()=>{
