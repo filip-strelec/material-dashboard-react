@@ -317,7 +317,7 @@ const WindowFocusHandler = () => {
     return () => {
       window.removeEventListener("focus", onFocus);
       window.removeEventListener("blur", onBlur);
-      ws.close();
+      //ws.close();
     };
   }, []);
 
