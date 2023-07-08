@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import loading from "./img/loading.svg";
 // import Button from "components/CustomButtons/Button.js";
-
+import ReactMarkdown from "react-markdown";
 const WrapperContent = styled.div`
   margin-top: 100px;
   padding: 0 20px;
@@ -20,6 +20,17 @@ const StyledButton = styled.button`
   font-weight: 700;
   background-color: ${props => props.status};
   pointer-events: ${props => props.pointerEvent};
+`;
+
+const CodeBlock = styled.code`
+  background-color: #f5f5f5;
+  padding: 10px;
+  display: block;
+  white-space: pre-wrap;
+`;
+
+const BoldText = styled.strong`
+  font-weight: bold;
 `;
 
 const TextContainer = styled.div`
@@ -83,6 +94,9 @@ const ImageContainer = styled.div`
   margin-bottom: 20px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
+  @media (max-width: 600px) {
+    width: 60%;
+  }
 `;
 
 const DjuroImage = styled.img`
@@ -93,6 +107,9 @@ const DjuroImageName = styled.h4`
   text-align: center;
   font-size: 24px;
   font-weight: bold;
+  @media (max-width: 600px) {
+    font-size: 16px;
+  }
 `;
 const IndividualRemoteWrapper = styled.div`
   min-width: 300px;
@@ -157,18 +174,72 @@ const DjuroHeaderChoice = styled.div`
   font-size: 20px;
 `;
 
+const ChatWindow = styled.div`
+  border: 1px solid black;
+  padding: 16px;
+  overflow-y: auto;
+  height: 76vh;
+  @media (max-width: 600px) {
+    height: 70vh;
+  }
+`;
+
+const Message = styled.p`
+  color: ${props => (props.role === "user" ? "blue" : "green")};
+  background-color: ${props => (props.role === "user" ? "#e6f7ff" : "#e6ffe6")};
+  padding: 10px;
+  word-break: break-all;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-size:15px;
+`;
+
+const Input = styled.input`
+  width: 80%;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+`;
+
+const Form = styled.form`
+  display: flex;
+  justify-content: center;
+  margin-top: 26px;
+`;
+
+const Button = styled.button`
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: burlywood;
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  &:hover {
+    background-color: #d5ae7b;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+`;
+
 let idVar;
 // User has switched back to the tab
 
 // User has switched away from the tab (AKA tab is hidden)
 
 const WindowFocusHandler = () => {
-  const [chatHistory, setChatHistory] = useState(false);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [newAiChat, setnewAiChat] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
   const [imagesHistory, setImagesHistory] = useState([]);
   const [newImage, setNewImage] = useState([]);
-
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [showImages, setShowImages] = useState(false);
-
+  const chatWindowRef = useRef(null);
   const [socket, setSocket] = useState(null);
   const [Temp, setTemp] = useState("0");
   const [Humidity, setHumidity] = useState("0");
@@ -276,42 +347,49 @@ const WindowFocusHandler = () => {
     window.addEventListener("focus", onFocus);
     window.addEventListener("blur", onBlur);
 
-    // Establish WebSocket connection
-    const ws = new WebSocket("wss://back.jazbina.xyz/websocket");
+    const initWebsocket = () => {
+      // Establish WebSocket connection
 
-    // Set up event listeners
-    ws.onopen = () => {
-      console.log("WebSocket connection established");
+      const ws = new WebSocket("wss://back.jazbina.xyz/websocket");
+
+      // Set up event listeners
+      ws.onopen = () => {
+        console.log("WebSocket connection established");
+      };
+
+      ws.onmessage = event => {
+        console.log("Received message WS:", event.data);
+
+        let messageJSON = JSON.parse(event.data);
+        console.log(messageJSON);
+        switch (messageJSON[0]) {
+          case 0: //initial
+            setChatHistory(messageJSON[1].chatHistory);
+            setImagesHistory(messageJSON[1].imageHistory);
+
+            break;
+          case 1: //images related
+            setNewImage(messageJSON[1]);
+
+            break;
+          case 2: //chat related
+            setnewAiChat(messageJSON[1]);
+            break;
+          default:
+            break;
+        }
+        // Process the received message
+      };
+
+      ws.onclose = () => {
+        console.log("WebSocket connection closed");
+        initWebsocket();
+      };
+
+      setSocket(ws);
     };
 
-    ws.onmessage = event => {
-      console.log("Received message FILIP:", event.data);
-
-      let messageJSON = JSON.parse(event.data);
-      console.log(messageJSON);
-      switch (messageJSON[0]) {
-        case 0: //initial
-          setChatHistory(messageJSON[1].chatHistory);
-          setImagesHistory(messageJSON[1].imageHistory);
-
-          break;
-        case 1: //images related
-          setNewImage(messageJSON[1]);
-
-          break;
-        case 2:
-          break;
-        default:
-          break;
-      }
-      // Process the received message
-    };
-
-    ws.onclose = () => {
-      console.log("WebSocket connection closed");
-    };
-
-    setSocket(ws);
+    initWebsocket();
 
     // Specify how to clean up after this effect:
     return () => {
@@ -327,12 +405,43 @@ const WindowFocusHandler = () => {
     }
   };
 
+  const handleImageError = event => {
+    //event.target.parentNode.style.display = "none";
+  };
+
   useEffect(() => {
     setImagesHistory([newImage, ...imagesHistory]);
   }, [newImage]);
 
+  useEffect(() => {
+    setChatHistory([...chatHistory, newAiChat]);
+  }, [newAiChat]);
+
+  useEffect(() => {
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    }
+  }, [chatHistory]);
+
+  const handleInputChange = event => {
+    setNewMessage(event.target.value);
+  };
+
+  const handleFormSubmit = event => {
+    event.preventDefault();
+    setIsButtonDisabled(true);
+    setTimeout(() => setIsButtonDisabled(false), 2000);
+    const newUserMessage = { role: "user", content: newMessage };
+    const messageObject = [2, newUserMessage];
+    sendMessage(JSON.stringify(messageObject));
+    //sendMessage("wassup");
+    console.log(JSON.stringify(messageObject));
+    setChatHistory([...chatHistory, newUserMessage]);
+    setNewMessage("");
+  };
+
   return (
-    <WrapperContent 
+    <WrapperContent
     //imageSrc={imagesHistory[0] && imagesHistory[0][1]}
     >
       <OpenDjuro
@@ -368,14 +477,56 @@ const WindowFocusHandler = () => {
             </DjuroHeaderChoice>
           </DjuroHeader>
 
-          {!showImages && <DjuroContentWrapper>Chat</DjuroContentWrapper>}
+          {!showImages && (
+            <DjuroContentWrapper>
+              <ChatWindow ref={chatWindowRef}>
+                {chatHistory.map((message, index) => (
+                  <Message
+                    key={index}
+                    role={message.role}
+                    colorOverride={
+                      message.role === "user" ? "purple" : "orange"
+                    }
+                  >
+                    <strong>
+                      {message.role === "user" ? "User" : "D.J.U.R.O."}
+                      {": "}
+                    </strong>
+
+                    <ReactMarkdown
+                      components={{
+                        code({ node, ...props }) {
+                          return <CodeBlock {...props} />;
+                        },
+                        strong({ node, ...props }) {
+                          return <BoldText {...props} />;
+                        }
+                      }}
+                    >
+                      {message.content}
+                    </ReactMarkdown>
+                  </Message>
+                ))}
+              </ChatWindow>
+              <Form onSubmit={handleFormSubmit}>
+                <Input
+                  type="text"
+                  value={newMessage}
+                  onChange={handleInputChange}
+                />
+                <Button disabled={isButtonDisabled} type="submit">
+                  Send
+                </Button>
+              </Form>
+            </DjuroContentWrapper>
+          )}
           {showImages && (
             <DjuroContentWrapper>
               <ImagesWrapper>
                 {imagesHistory.map((item, index) => (
                   <ImageContainer key={index}>
-                    <DjuroImageName>{item[0]}</DjuroImageName>
-                    <DjuroImage src={item[1]} />
+                    <DjuroImageName>{item[1] && item[0]}</DjuroImageName>
+                    <DjuroImage onError={handleImageError} src={item[1]} />
                   </ImageContainer>
                 ))}
               </ImagesWrapper>
