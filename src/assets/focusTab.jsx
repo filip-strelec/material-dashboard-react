@@ -33,6 +33,40 @@ const BoldText = styled.strong`
   font-weight: bold;
 `;
 
+const Link = styled.a`
+  color: #0366d6;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const Header1 = styled.h1`
+  color: #333;
+  font-size: 1.5em;
+`;
+
+const Header2 = styled.h2`
+  color: #333;
+  font-size: 1.3em;
+`;
+
+const Header3 = styled.h3`
+  color: #333;
+  font-size: 1.1em;
+`;
+
+const ItalicText = styled.em`
+  font-style: italic;
+`;
+
+const Blockquote = styled.blockquote`
+  border-left: 4px solid #ddd;
+  padding-left: 10px;
+  color: #666;
+`;
+
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -67,7 +101,8 @@ const DjuroWrapper = styled.div`
   height: 100vh;
   z-index: 9999999999;
   top: 0;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 `;
 
 const DjuroContentWrapper = styled.div`
@@ -156,6 +191,16 @@ const Text = styled.div`
   margin-top: 16px;
 `;
 
+const HeaderWrapperAbsolute = styled.div`
+  position: absolute;
+  top: 0px;
+  left: 8px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+`;
+
 const DjuroHeader = styled.div`
   width: 100%;
   display: flex;
@@ -174,13 +219,20 @@ const DjuroHeaderChoice = styled.div`
   font-size: 20px;
 `;
 
+const DjuroHeaderChoiceAbsolute = styled(DjuroHeaderChoice)`
+  font-size: 16px;
+  padding: 6px;
+  background: #e6ffe6;
+  color: green;
+`;
+
 const ChatWindow = styled.div`
   border: 1px solid black;
   padding: 16px;
   overflow-y: auto;
   height: 76vh;
   @media (max-width: 600px) {
-    height: 70vh;
+    height: 64vh;
   }
 `;
 
@@ -188,10 +240,9 @@ const Message = styled.p`
   color: ${props => (props.role === "user" ? "blue" : "green")};
   background-color: ${props => (props.role === "user" ? "#e6f7ff" : "#e6ffe6")};
   padding: 10px;
-  word-break: break-all;
   border-radius: 5px;
   margin-bottom: 10px;
-  font-size:15px;
+  font-size: 15px;
 `;
 
 const Input = styled.input`
@@ -206,6 +257,7 @@ const Form = styled.form`
   display: flex;
   justify-content: center;
   margin-top: 26px;
+  padding: 0px 24px;
 `;
 
 const Button = styled.button`
@@ -461,6 +513,32 @@ const WindowFocusHandler = () => {
             X
           </CloseIr>
           <DjuroHeader>
+            <HeaderWrapperAbsolute>
+              <DjuroHeaderChoiceAbsolute
+                onClick={() => {
+                  axios
+                    .get(`${url}/stop-listening`)
+
+                    .catch(function(error) {
+                      console.log(error);
+                    });
+                }}
+              >
+                D.J.U.R.O Off
+              </DjuroHeaderChoiceAbsolute>
+              <DjuroHeaderChoiceAbsolute
+                onClick={() => {
+                  axios
+                    .get(`${url}/start-ai`)
+
+                    .catch(function(error) {
+                      console.log(error);
+                    });
+                }}
+              >
+                D.J.U.R.O On
+              </DjuroHeaderChoiceAbsolute>
+            </HeaderWrapperAbsolute>
             <DjuroHeaderChoice
               onClick={() => {
                 setShowImages(false);
@@ -500,6 +578,24 @@ const WindowFocusHandler = () => {
                         },
                         strong({ node, ...props }) {
                           return <BoldText {...props} />;
+                        },
+                        a({ node, ...props }) {
+                          return <Link {...props} />;
+                        },
+                        h1({ node, ...props }) {
+                          return <Header1 {...props} />;
+                        },
+                        h2({ node, ...props }) {
+                          return <Header2 {...props} />;
+                        },
+                        h3({ node, ...props }) {
+                          return <Header3 {...props} />;
+                        },
+                        em({ node, ...props }) {
+                          return <ItalicText {...props} />;
+                        },
+                        blockquote({ node, ...props }) {
+                          return <Blockquote {...props} />;
                         }
                       }}
                     >
