@@ -256,7 +256,7 @@ const Input = styled.input`
 const Form = styled.form`
   display: flex;
   justify-content: center;
-  margin-top: 26px;
+  margin-top: 8px;
   padding: 0px 24px;
 `;
 

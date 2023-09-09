@@ -43,8 +43,8 @@ function GuestGreeting(props) {
 
 function Greeting(props) {
   const isLoggedIn = props.isLoggedIn;
-
-  if (isLoggedIn) {
+//disabled prompt login
+  if (true) {
     return <UserGreeting />;
   }
   return <GuestGreeting />;
