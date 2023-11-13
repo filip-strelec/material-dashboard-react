@@ -189,6 +189,9 @@ const Corona = styled.div`
 const Text = styled.div`
   width: max-content;
   margin-top: 16px;
+  color: black;
+  font-weight: 600;
+  margin-bottom: ${props => props.marginBottom};
 `;
 
 const HeaderWrapperAbsolute = styled.div`
@@ -1410,8 +1413,7 @@ const WindowFocusHandler = () => {
         <Text>Temperatura:{Temp} °C</Text>
         <Text>Vlažnost:{Humidity} %</Text>
         <Text>PM2.5: {Pm25} pcs/0.01cf</Text>
-        <Text>PM10: {Pm10} pcs/0.01cf</Text>
-        <Text>Etanol: {Etanol} ‰ </Text>
+        <Text marginBottom="50px">PM10: {Pm10} pcs/0.01cf</Text>
         <br></br>
         <br></br>
         <br></br>

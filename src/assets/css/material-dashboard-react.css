@@ -19,6 +19,10 @@
   stroke-dasharray: 2px;
 }
 
+#root{
+  background: #4d664d;
+}
+
 .ct-series-a .ct-point,
 .ct-series-a .ct-line,
 .ct-series-a .ct-bar,
