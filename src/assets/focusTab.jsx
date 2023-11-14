@@ -1187,7 +1187,7 @@ const WindowFocusHandler = () => {
           </IndividualRemoteWrapper>
         </IrRemoteWrapper>
       )}
-      <div>
+      <div style={{ color: "black", fontWeight: "500" }}>
         {Number.parseInt(slider) === 0 ? "No Limit" : `${slider} (minutes)`}
       </div>
       <input
